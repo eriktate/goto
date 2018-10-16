@@ -3,9 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"strings"
+
+	"github.com/eriktate/jump/svc"
 )
 
 type options struct {
@@ -16,16 +17,29 @@ type options struct {
 	Add    bool
 	Remove bool
 	Path   string
+	Target string
 }
 
 func main() {
-	log.Printf("Arg count: %d", len(os.Args))
 	opts, err := parseArgs(os.Args)
 	if err != nil {
-		log.Print(err)
+		fmt.Println(err)
 	}
 
-	fmt.Printf("%+v", opts)
+	envPaths := strings.Split(os.Getenv("JUMP_PATH"), ":")
+
+	j := svc.NewJumpSvc(envPaths)
+
+	if opts.Target != "" {
+		path, err := j.Jump(opts.Target)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+			return
+		}
+
+		fmt.Print(path)
+	}
 }
 
 func parseArgs(args []string) (options, error) {
@@ -55,6 +69,12 @@ func parseArgs(args []string) (options, error) {
 				opts.Path = parts[1]
 			}
 			opts.Remove = true
+		default:
+			if parts[0][0] == '-' {
+				return opts, fmt.Errorf("unrecognized flag: %s", parts[0])
+			}
+
+			opts.Target = parts[0]
 		}
 	}
 
