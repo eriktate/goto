@@ -20,10 +20,18 @@ type options struct {
 	Target string
 }
 
+func printError(err error) {
+	fmt.Printf("echo \"%s\"", err)
+}
+
+func cd(path string) {
+	fmt.Printf("cd %s", path)
+}
+
 func main() {
 	opts, err := parseArgs(os.Args)
 	if err != nil {
-		fmt.Println(err)
+		printError(err)
 	}
 
 	envPaths := strings.Split(os.Getenv("JUMP_PATH"), ":")
@@ -33,12 +41,12 @@ func main() {
 	if opts.Target != "" {
 		path, err := j.Jump(opts.Target)
 		if err != nil {
-			fmt.Println(err)
+			printError(err)
 			os.Exit(1)
 			return
 		}
 
-		fmt.Print(path)
+		cd(path)
 	}
 }
 
