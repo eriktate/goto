@@ -1,0 +1,10 @@
+- Uses an environment variable, similar to PATH, to determine where searches should occur. GOTO_PATH
+- Can be configured to run recursively.
+- Supports aliasing of folders as different names.
+- Allows for expansion of names to absolute paths. Useful when composing with other utilities.
+- goto [ folder/alias name ] : Goes to the name provided.
+- goto --alias=[alias name] : Sets an alias for the current directory
+- goto --alias=[alias name] name : Sets an alias for the name supplied
+- goto --alias : List all aliases.
+- goto --clean : Cleans all aliases that point to names/paths that no longer exist.
+- goto --resolve=[folder/alias name] : Prints the absolute path for the name provided.
