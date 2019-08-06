@@ -1,7 +1,6 @@
 package svc
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
@@ -18,21 +17,6 @@ func NewJumpSvc(paths []string) jumpSvc {
 	return jumpSvc{
 		names: indexPaths(paths),
 	}
-}
-
-// Jump attempts to change directories given a name.
-func (j jumpSvc) Jump(name string) (string, error) {
-	if paths, ok := j.names[name]; ok {
-		var path string
-		path = paths[0]
-		if len(path) > 1 {
-			// TODO: Prompt for choice
-		}
-
-		return path, nil
-	}
-
-	return "", errors.New("directory does not exist")
 }
 
 func indexPaths(paths []string) map[string][]string {

@@ -1,7 +1,7 @@
 all: build run
 
 build:
-	go build -o bin/jump ./cmd
+	go build -o bin/jump main.go
 
 run:
 	./bin/jump
